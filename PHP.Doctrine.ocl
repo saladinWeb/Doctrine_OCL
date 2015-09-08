@@ -1,13 +1,12 @@
 [comment]
 /*******************************************************************************
- * UML to Php simple generator
- * Based on https://github.com/AlixBa/doctrine-generator
+ * UML to Php doctrine Class
+ * Based on https://github.com/saladinWeb/Doctrine_OCL
  *
- * This is a MTL generator template
- * See: 
- * Language Reference: http://help.eclipse.org/juno/topic/org.eclipse.acceleo.doc/pages/reference/language.html?cp=5_3_0
- * Operations: http://help.eclipse.org/juno/topic/org.eclipse.acceleo.doc/pages/reference/operations.html?cp=5_3_2
- * Text production rules: http://help.eclipse.org/juno/topic/org.eclipse.acceleo.doc/pages/reference/textproductionrules.html?cp=5_3_5
+ * References : 
+ *	http://help.eclipse.org/juno/index.jsp?topic=%2Forg.eclipse.ocl.doc%2Fhelp%2FCompleteOCLTutorial.html
+ *	https://openclassrooms.com/courses/apprendre-a-utiliser-doctrine
+ *	https://www.genmymodel.com/
  *
  *******************************************************************************
 [/comment]
@@ -15,7 +14,6 @@
 
 [**
  * The main entry - looks over the UML diagram and creates one php file per class.
- * If the class is contained in a package, the php file will be created in the folder with the package name.
  * @param c UML Class.
 */]
 [template public generate(c : Class)]
@@ -36,21 +34,10 @@
 
 class [c.name/] 
 [if (c.generalization->isEmpty())]Extends Doctrine_Table[else][c.generalization.genGeneralization()/][/if] {
-    [c.attribute.genAttribute()/]
     [c.construct()/]
     [c.ownedOperation.functions()/]
     
 }
-[/template]
-
-[**
- * Generates attribute code (name and visibility).
- * If the attribute visibility is set to "package", then it will be considered as protected. 
- * @param p UML Property.
-*/]
-[template public genAttribute(p : Property)]
-[if (p.visibility <> VisibilityKind::_package )][p.visibility/][else]protected[/if] $[p.name/];
-
 [/template]
 
 [**
